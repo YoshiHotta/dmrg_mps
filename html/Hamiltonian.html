@@ -1,0 +1,129 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Hamiltonian</title><meta name="generator" content="MATLAB 8.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-02-13"><meta name="DC.source" content="Hamiltonian.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% Hamiltonian&#12434;MPO&#12391;&#23450;&#32681;&#12377;&#12427;&#12290;MPO&#12392;&#12399;&#27425;&#12391;&#23450;&#32681;&#12373;&#12428;&#12427;&#12424;&#12358;&#12394;&#12418;&#12398;&#12398;&#12371;&#12392;&#12391;&#12354;&#12427;&#65306;</span>
+</pre><pre class="codeoutput">Error: File: /Users/yoshi/Documents/petraWorkspace/DMRG/DMRG_Hotta/Hamiltonian.m Line: 53 Column: 10
+The function "randomMPS" was closed with an 'end', but at least one other function definition was not. To avoid confusion when using nested functions, it is illegal to use both conventions in the same file.
+</pre><p><img src="Hamiltonian_eq01669.png" alt="$$H(\sigma', \sigma) = \prod_{l} W_{b_{l-1},b_l}^{\sigma_{l}',\sigma_l}$$"></p><p><img vspace="5" hspace="5" src="def_MPO.jpg" alt=""> </p><p>&#12375;&#12383;&#12364;&#12387;&#12390;</p><p><img src="Hamiltonian_eq01661.png" alt="$$H = \sum_{m=1}^{M} h^{m}_1\otimes \cdots \otimes h^{m}_N$$"></p><p><img vspace="5" hspace="5" src="def_Hamiltonian.jpg" alt=""> </p><pre class="codeinput"><span class="comment">%&#12288;&#12399;Hamiltonian()&#12398;&#20837;&#21147;&#12395;&#12399;&#20351;&#12360;&#12394;&#12356;&#12290;&#12375;&#12363;&#12375;&#31532;m&#38917;&#12384;&#12369;&#12434;&#21462;&#12426;&#20986;&#12379;&#12400;dim(b_l)=1&#12398;MPO&#12395;&#12394;&#12387;&#12390;&#12356;&#12427;&#12398;&#12391;&#12289;</span>
+<span class="comment">% Hamiltonian()&#12398;&#20837;&#21147;&#12395;&#20351;&#12360;&#12427;&#12290;</span>
+</pre><p>mps = { M(1), ..., M(N) }. M{i}&#12399;i&#30058;&#30446;&#12398;&#31890;&#23376;&#12395;&#23550;&#24540;&#12377;&#12427;D *&#12288;D *&#12288;d&#12398;&#12486;&#12531;&#12477;&#12523;&#12290;</p><p><img vspace="5" hspace="5" src="defOfIndex.jpg" alt=""> </p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% HamiltonianをMPOで定義する。MPOとは次で定義されるようなもののことである：
+%%
+% $$H(\sigma', \sigma) = \prod_{l} W_{b_{l-1},b_l}^{\sigma_{l}',\sigma_l}$$
+%%
+% <<def_MPO.jpg>>
+%%
+% したがって
+%%
+% $$H = \sum_{m=1}^{M} h^{m}_1\otimes \cdots \otimes h^{m}_N$$
+%%
+% <<def_Hamiltonian.jpg>>
+%%
+%　はHamiltonian()の入力には使えない。しかし第m項だけを取り出せばdim(b_l)=1のMPOになっているので、
+% Hamiltonian()の入力に使える。
+%%
+% mps = { M(1), ..., M(N) }. M{i}はi番目の粒子に対応するD *　D *　dのテンソル。
+%%
+% <<defOfIndex.jpg>>
+
+
+
+function minimizeE()  
+% 
+% Start from some initial guess for |\phi>, which is right-normalized, i.e. consists of B-matrices only.
+initialRandomMPS = randomMPS(D, d, N);
+initialRandomMPSRightNormalized = rightNormalize( initialRandomMPS );
+
+% Calculate the R-expressions iteratively for all site positions L - 1 through 1 iteratively.
+
+% Right sweep
+
+end
+
+function mps = randomMPS(D, d, N)
+mps = cell(1, N);
+mps{1} = randn( 1, D, d );
+mps{N} = randn( D, 1, d );
+for i = 2:N-1
+    mps{i} = randn(D,D,d);
+end
+end
+
+function rightNormalize( mps )
+N = length( mps );
+D = size( mps{1}, 1 );
+d = size( mps{1}, 2 );
+
+for i = N:-1:2
+    
+svd()
+end
+
+function 
+##### SOURCE END #####
+--></body></html>

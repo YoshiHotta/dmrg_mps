@@ -1,0 +1,466 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>minimizeE</title><meta name="generator" content="MATLAB 8.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-02-18"><meta name="DC.source" content="minimizeE.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% Hamiltonian&#12434;MPO&#12391;&#23450;&#32681;&#12377;&#12427;&#12290;MPO&#12392;&#12399;&#27425;&#12391;&#23450;&#32681;&#12373;&#12428;&#12427;&#12424;&#12358;&#12394;&#12418;&#12398;&#12398;&#12371;&#12392;&#12391;&#12354;&#12427;&#65306;</span>
+</pre><p><img src="minimizeE_eq01669.png" alt="$$H(\sigma', \sigma) = \prod_{l} W_{b_{l-1},b_l}^{\sigma_{l}',\sigma_l}$$"></p><p><img vspace="5" hspace="5" src="def_MPO.jpg" alt=""> </p><p>&#12375;&#12383;&#12364;&#12387;&#12390;</p><p><img src="minimizeE_eq01661.png" alt="$$H = \sum_{m=1}^{M} h^{m}_1\otimes \cdots \otimes h^{m}_N$$"></p><p><img vspace="5" hspace="5" src="def_Hamiltonian.jpg" alt=""> </p><pre class="codeinput"><span class="comment">%&#12288;&#12399;Hamiltonian()&#12398;&#20837;&#21147;&#12395;&#12399;&#20351;&#12360;&#12394;&#12356;&#12290;&#12375;&#12363;&#12375;&#31532;m&#38917;&#12384;&#12369;&#12434;&#21462;&#12426;&#20986;&#12379;&#12400;dim(b_l)=1&#12398;MPO&#12395;&#12394;&#12387;&#12390;&#12356;&#12427;&#12398;&#12391;&#12289;</span>
+<span class="comment">% Hamiltonian()&#12398;&#20837;&#21147;&#12395;&#20351;&#12360;&#12427;&#12290;</span>
+</pre><p>mps = { M(1), ..., M(N) }. M{i}&#12399;i&#30058;&#30446;&#12398;&#31890;&#23376;&#12395;&#23550;&#24540;&#12377;&#12427;D *&#12288;D *&#12288;d&#12398;&#12486;&#12531;&#12477;&#12523;&#12290; &#12486;&#12531;&#12477;&#12523;&#12398;&#28155;&#12360;&#23383;&#12434;M{i}(p, q, r)&#12392;&#12377;&#12427;&#12392;&#12289;p, q, r&#12399;&#12381;&#12428;&#12382;&#12428;&#19979;&#22259;&#12398;&#65297;&#30058;&#12289;&#65298;&#30058;&#12289;&#65299;&#30058;&#12395;&#23550;&#24540;&#12377;&#12427;&#65306;</p><p><img vspace="5" hspace="5" src="defOfIndex.jpg" alt=""> </p><pre class="codeinput"><span class="keyword">function</span> E_GS = minimizeE(J, h, N, D, isGS)
+</pre><pre class="codeinput"><span class="comment">%</span>
+<span class="comment">% Start from some initial guess for |\phi&gt;, which is right-normalized, i.e. consists of B-matrices only.</span>
+<span class="comment">% N = 20;</span>
+<span class="comment">% D = 2;</span>
+
+<span class="comment">% J = 1;</span>
+<span class="comment">% h = 1;</span>
+HamiltonianMPO = transverseIsingMPO(N, J, h );
+
+d = size(HamiltonianMPO{1}, 3);
+initialRandomMPS = randomMPS(D, d, N);
+initialRandomMPSRightNormalized = rightNormalize( initialRandomMPS ); <span class="comment">% B-matrix&#12395;&#22793;&#25563;&#12377;&#12427;</span>
+M = initialRandomMPSRightNormalized;
+
+<span class="comment">% Calculate the R-expressions iteratively for all site positions N - 1 through 1 iteratively.</span>
+R = cell(1, N-1); <span class="comment">% R{l}&#12399;a_{l-1}, b_{-1}, a'_{l-1}&#12364;&#38283;&#12356;&#12390;&#12356;&#12427;&#12486;&#12531;&#12477;&#12523;</span>
+<span class="comment">% &#20219;&#24847;&#12398;&#12495;&#12511;&#12523;&#12488;&#12491;&#12450;&#12531;&#65288;&#19979;&#24335;&#65289;&#12434;&#25201;&#12360;&#12427;&#12424;&#12358;&#12395;&#12375;&#12424;&#12358;&#12392;&#12375;&#12383;&#12364;&#20998;&#12363;&#12425;&#12394;&#12356;&#12363;&#12425;&#35558;&#12417;&#12383;&#12290;</span>
+</pre><pre class="codeoutput">Error using minimizeE (line 31)
+Not enough input arguments.
+</pre><p><img vspace="5" hspace="5" src="def_Hamiltonian.jpg" alt=""> </p><pre class="codeinput"><span class="comment">%R_N_temp = contractTensors( B{N}, 3,</span>
+<span class="comment">% for l = N-1:-1:1</span>
+<span class="comment">%     R_l_temp = contractTensors( R{l+1}, 3, 1, B{l+1}, 3, 2 );</span>
+<span class="comment">%</span>
+<span class="comment">%     R_l_temp_temp = [];</span>
+<span class="comment">%     for m = 1:M</span>
+<span class="comment">%         W = hamiltonians{m, l+1};</span>
+<span class="comment">%         R_l_temp_temp{m} = contractTensors( R_l_temp, 4, [1 4], W, 4, [2 3] )...</span>
+<span class="comment">%                            + R_l_temp_temp;</span>
+<span class="comment">%     end</span>
+<span class="comment">%     R_l_temp = R_l_temp_temp;</span>
+<span class="comment">%     R{l} = contractTensors( R_l_temp, 4, [1 4], conj(B{l+1}), [2 3] );</span>
+<span class="comment">% end</span>
+
+<span class="comment">% MPO&#34920;&#31034;&#12398;Hamiltonian&#12384;&#12369;&#25201;&#12360;&#12427;&#12290;</span>
+R_N_temp = contractTensors( M{N}, 3, 3, HamiltonianMPO{N}, 4, 4 );
+<span class="comment">% R&#12398;&#28155;&#12360;&#23383;&#12398;&#23450;&#32681;&#12399;&#19979;&#22259;&#12398;&#36890;&#12426;</span>
+</pre><p><img vspace="5" hspace="5" src="defOfRIndex.jpg" alt=""> </p><pre class="codeinput"><span class="comment">% R{N-1}&#12384;&#12369;&#12399;&#29305;&#21029;&#12394;&#20966;&#29702;&#12434;&#12375;&#12390;&#12289;&#28155;&#12360;&#23383;&#12398;&#23450;&#32681;&#12364;&#19978;&#22259;&#12395;&#21512;&#33268;&#12377;&#12427;&#12424;&#12358;&#12395;&#12375;&#12394;&#12367;&#12390;&#12399;&#12356;&#12369;&#12394;&#12356;&#12290;</span>
+<span class="comment">% &#26368;&#24460;&#12398;&#28155;&#12360;&#23383;&#12398;&#27425;&#20803;&#12364;&#65297;&#12394;&#12398;&#12391;&#12521;&#12531;&#12463;&#12364;&#19968;&#12388;&#33853;&#12385;&#12390;&#12289;rank-6&#12376;&#12419;&#12394;&#12367;&#12390;rank-5&#12395;&#12394;&#12427;&#12290;</span>
+R_N_temp = contractTensors( R_N_temp, 5, 5, conj( M{N} ), 3, 3 );
+<span class="comment">% &#26368;&#24460;&#12398;&#20108;&#12388;&#12398;&#28155;&#12360;&#23383;&#12398;&#27425;&#20803;&#12434;1&#12395;&#12375;&#12390;&#12289;&#12521;&#12531;&#12463;&#12434;2&#12388;&#33853;&#12392;&#12377;&#12290;&#12371;&#12428;&#12395;&#12424;&#12387;&#12390;R_N_temp&#12399;rank-3&#12398;&#12486;&#12531;&#12477;&#12523;&#12395;&#12394;&#12427;&#12290;</span>
+R_N_temp = permute( R_N_temp, [1 3 5 2 4] );
+R{N - 1} = R_N_temp;
+<span class="keyword">for</span> l = N-2:-1:1
+    R_l_temp = contractTensors( R{l+1}, 3, 1, M{l+1}, 3, 2 );
+    R_l_temp = contractTensors( R_l_temp, 4, [1 4], HamiltonianMPO{l+1}, 4, [2 3] ) ;
+    R_1_temp = contractTensors( R_l_temp, 4, [1 4], conj(M{l+1}), 3, [2 3] );
+    R{l} = R_1_temp;
+<span class="keyword">end</span>
+
+L = cell(1,N -1);
+E_GSs = [];
+<span class="keyword">for</span> i_sweep = 1:10 <span class="comment">% &#23558;&#26469;&#30340;&#12395;&#21454;&#26463;&#12434;&#21028;&#21029;&#12375;&#12390;&#12523;&#12540;&#12503;&#12434;&#25244;&#12369;&#12427;&#12424;&#12358;&#12395;&#12377;&#12427;&#12290;</span>
+
+    <span class="comment">% Right sweep</span>
+    <span class="keyword">for</span> l=1:N-1
+        <span class="keyword">if</span> l == 1
+            Heff = contractTensors( HamiltonianMPO{1}, 4, 2, R{1}, 3, 2);
+            Heff = reshape(Heff, [1, size(Heff)]);
+        <span class="keyword">else</span>
+            Heff = contractTensors( L{l-1}, 3,2, HamiltonianMPO{l}, 4, 1);
+            Heff = contractTensors( Heff, 5, 3, R{l}, 3, 2 );
+        <span class="keyword">end</span>
+        HeffMatrixForm = reshape( permute( Heff, [3 2 6 4 1 5] ), <span class="keyword">...</span>
+            [size(HamiltonianMPO{l}, 3) * size(Heff, 2) * size(R{l}, 3), size(HamiltonianMPO{l}, 4) * size(Heff, 1 ) * size(R{l}, 1) ] );
+        MlVectorForm = reshape( permute(M{l}, [3 1 2]), [numel(M{l}), 1] );
+        options.v0 = MlVectorForm ;
+
+        <span class="comment">% &#26412;&#24403;&#12399;P' * Heff *P&#12392;&#12375;&#12383;&#26041;&#12364;&#27491;&#30906;&#12395;&#27714;&#12414;&#12427;&#12425;&#12375;&#12356;&#12290;</span>
+        <span class="keyword">if</span> isGS
+            [MlVectorForm, E_GS] = eigs(HeffMatrixForm, 1,  <span class="string">'sr'</span>, options ) ;
+        <span class="keyword">else</span>
+            [MlVectorForm2, E_GS2] = eigs(HeffMatrixForm, 2,  <span class="string">'sr'</span>, options ) ;
+            MlVectorForm = MlVectorForm2(:,2);
+            E_GS = E_GS2(2,2);
+        <span class="keyword">end</span>
+
+        E_GSs = [E_GSs E_GS];
+        M{l} = permute( reshape( MlVectorForm, [size(M{l},3), size(M{l},1), size(M{l},2)] ), [2 3 1 ] ) ;
+
+        MlMatrixForm = reshape( permute(M{l}, [3 1 2]), [size(M{l},3) * size(M{l},1), size(M{l},2)] );
+        [AlMatrixForm, S, V] = svd(MlMatrixForm, <span class="string">'econ'</span>) ;
+        dimS = size( S, 1);
+        M{l} = permute( reshape(AlMatrixForm, [size(M{l},3), size(M{l},1),  dimS]), [2 3 1] );
+        VdagM = contractTensors( V', 2, 2, M{l+1}, 3, 1 );
+        <span class="comment">%    M{l+1} = [];</span>
+        <span class="comment">%     for s = 1:dimS</span>
+        <span class="comment">%         M{l+1}(s, :, :) = S(s,s) * VdagM(s, :, :);</span>
+        <span class="comment">%     end</span>
+        M{l+1} = contractTensors(S, 2, 2, VdagM, 3, 1 );
+
+        <span class="keyword">if</span> l == 1
+            L{1} = contractTensors( M{1}, 3, 3, HamiltonianMPO{1}, 4, 4 );
+            L{1} = contractTensors( L{1}, 5, 5, conj( M{1} ), 3, 3 );
+            L{l} = permute( L{1}, [2 4 6 1 3 5] ); <span class="comment">% rank-3&#12398;&#12486;&#12531;&#12477;&#12523;&#12395;&#12377;&#12427;&#12290;</span>
+        <span class="keyword">else</span>
+            L{l} = contractTensors( L{l-1}, 3, 1, M{l}, 3, 1 );
+            L{l} = contractTensors( L{l}, 4, [1 4], HamiltonianMPO{l}, 4, [1 4] );
+            L{l} = contractTensors( L{l}, 4, [1 4], conj( M{l} ), 3, [1 3] );
+        <span class="keyword">end</span>
+
+    <span class="keyword">end</span>
+
+
+    <span class="comment">% Left sweep</span>
+    <span class="keyword">for</span> l = N:-1:2
+        <span class="keyword">if</span> l == N
+            Heff = contractTensors( L{N-1}, 3, 2, HamiltonianMPO{N}, 4, 1 );
+            Heff = permute(Heff, [1 2 4 5 3]) ;
+            HeffMatrixForm = reshape( permute( Heff, [3 2 4 1] ), <span class="keyword">...</span>
+                [size(HamiltonianMPO{N}, 3) * size(Heff, 2), size(HamiltonianMPO{l}, 4) * size(Heff, 1)]) ;
+        <span class="keyword">else</span>
+            Heff = contractTensors( L{l-1}, 3,2, HamiltonianMPO{l}, 4, 1);
+            Heff = contractTensors( Heff, 5, 3, R{l}, 3, 2 );
+            HeffMatrixForm = reshape( permute( Heff, [3 2 6 4 1 5] ), <span class="keyword">...</span>
+                [size(HamiltonianMPO{l}, 3) * size(Heff, 2) * size(R{l}, 3), size(HamiltonianMPO{l}, 4) * size(Heff, 1 ) * size(R{l}, 1) ] );
+        <span class="keyword">end</span>
+        MlVectorForm = reshape( permute(M{l}, [3 1 2]), [numel(M{l}), 1] );
+        options.v0 = MlVectorForm ;
+
+        <span class="keyword">if</span> isGS
+            [MlVectorForm, E_GS] = eigs(HeffMatrixForm, 1,  <span class="string">'sr'</span>, options ) ;
+        <span class="keyword">else</span>
+            [MlVectorForm2, E_GS2] = eigs(HeffMatrixForm, 2,  <span class="string">'sr'</span>, options ) ;
+            MlVectorForm = MlVectorForm2(:,2);
+            E_GS = E_GS2(2,2);
+        <span class="keyword">end</span>
+
+        E_GSs = [E_GSs E_GS];
+        M{l} = permute( reshape( MlVectorForm, [size(M{l},3), size(M{l},1), size(M{l},2)] ), [2 3 1 ] ) ;
+
+        <span class="comment">% &#12371;&#12371;&#12363;&#12425;rightNormalize()&#12398;&#12467;&#12500;&#12506;</span>
+        Dleft = size( M{l}, 1 );
+        Dright = size( M{l},2);
+        d = size( M{l}, 3 );
+        MlMatrixForm = reshape( permute( M{l}, [1,3,2]), [Dleft, Dright*d] ) ;
+        [U,S,V] = svd(MlMatrixForm, <span class="string">'econ'</span>);
+        BlMatrixForm = V';
+        dimS = size(S, 1); <span class="comment">% S&#12399;&#23550;&#35282;&#34892;&#21015;</span>
+        M{l} = permute( reshape(BlMatrixForm, [dimS, d, Dright]), [1,3,2]) ;
+        MU = contractTensors(M{l-1}, 3, 2, U, 2, 1) ;
+        MU = permute(MU, [1 3 2]);
+        M{l-1} = zeros(size(MU,1), dimS, size(MU,3));
+        <span class="comment">%     for s = 1:dimS</span>
+        <span class="comment">%         M{l-1}(:,s,:) = MU(:,s,:) * S(s,s);</span>
+        <span class="comment">%     end</span>
+        M{l-1} = permute( contractTensors( MU, 3, 2, S, 2, 1 ), [1 3 2] );
+
+
+        <span class="comment">% rightNormalize()&#12398;&#12467;&#12500;&#12506;&#32066;&#20102;</span>
+
+        <span class="keyword">if</span> l == N
+            R_N_temp = contractTensors( M{N}, 3, 3, HamiltonianMPO{N}, 4, 4 );
+            R_N_temp = contractTensors( R_N_temp, 5, 5, conj( M{N} ), 3, 3 );
+            <span class="comment">% &#26368;&#24460;&#12398;&#20108;&#12388;&#12398;&#28155;&#12360;&#23383;&#12398;&#27425;&#20803;&#12434;1&#12395;&#12375;&#12390;&#12289;&#12521;&#12531;&#12463;&#12434;2&#12388;&#33853;&#12392;&#12377;&#12290;&#12371;&#12428;&#12395;&#12424;&#12387;&#12390;R_N_temp&#12399;rank-3&#12398;&#12486;&#12531;&#12477;&#12523;&#12395;&#12394;&#12427;&#12290;</span>
+            R_N_temp = permute( R_N_temp, [1 3 5 2 4] );
+            R{N - 1} = R_N_temp;
+        <span class="keyword">else</span>
+            R_lm1_temp = contractTensors( R{l}, 3, 1, M{l}, 3, 2 );
+            R_lm1_temp = contractTensors( R_lm1_temp, 4, [1 4], HamiltonianMPO{l}, 4, [2 3] ) ;
+            R_1m1_temp = contractTensors( R_lm1_temp, 4, [1 4], conj(M{l}), 3, [2 3] );
+            R{l-1} = R_1m1_temp;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="comment">% i_sweep = 1:length(E_GSs) ;</span>
+<span class="comment">% plot(i_sweep, E_GSs);</span>
+<span class="comment">% disp('calculated:');</span>
+<span class="comment">% disp(E_GSs(end));</span>
+<span class="comment">% disp('Exact:')</span>
+<span class="comment">% disp(exactTransverseIsing(J,h,N));</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+<span class="keyword">function</span> mps = randomMPS(D, d, N)
+mps = cell(1, N);
+mps{1} = randn( 1, D, d );
+mps{N} = randn( D, 1, d );
+<span class="keyword">for</span> i = 2:N-1
+    mps{i} = randn(D,D,d);
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% HamiltonianをMPOで定義する。MPOとは次で定義されるようなもののことである：
+%%
+% $$H(\sigma', \sigma) = \prod_{l} W_{b_{l-1},b_l}^{\sigma_{l}',\sigma_l}$$
+%%
+% <<def_MPO.jpg>>
+%%
+% したがって
+%%
+% $$H = \sum_{m=1}^{M} h^{m}_1\otimes \cdots \otimes h^{m}_N$$
+%%
+% <<def_Hamiltonian.jpg>>
+%%
+%　はHamiltonian()の入力には使えない。しかし第m項だけを取り出せばdim(b_l)=1のMPOになっているので、
+% Hamiltonian()の入力に使える。
+%%
+% mps = { M(1), ..., M(N) }. M{i}はi番目の粒子に対応するD *　D *　dのテンソル。
+% テンソルの添え字をM{i}(p, q, r)とすると、p, q, rはそれぞれ下図の１番、２番、３番に対応する：
+%%
+% <<defOfIndex.jpg>>
+%
+
+
+function E_GS = minimizeE(J, h, N, D, isGS)  
+% 
+% Start from some initial guess for |\phi>, which is right-normalized, i.e. consists of B-matrices only.
+% N = 20;
+% D = 2;
+
+% J = 1;
+% h = 1;
+HamiltonianMPO = transverseIsingMPO(N, J, h );
+
+d = size(HamiltonianMPO{1}, 3);
+initialRandomMPS = randomMPS(D, d, N);
+initialRandomMPSRightNormalized = rightNormalize( initialRandomMPS ); % B-matrixに変換する
+M = initialRandomMPSRightNormalized;
+
+% Calculate the R-expressions iteratively for all site positions N - 1 through 1 iteratively.
+R = cell(1, N-1); % R{l}はa_{l-1}, b_{-1}, a'_{l-1}が開いているテンソル
+% 任意のハミルトニアン（下式）を扱えるようにしようとしたが分からないから諦めた。
+%% 
+% <<def_Hamiltonian.jpg>>
+%R_N_temp = contractTensors( B{N}, 3, 
+% for l = N-1:-1:1
+%     R_l_temp = contractTensors( R{l+1}, 3, 1, B{l+1}, 3, 2 );
+%     
+%     R_l_temp_temp = [];
+%     for m = 1:M
+%         W = hamiltonians{m, l+1};
+%         R_l_temp_temp{m} = contractTensors( R_l_temp, 4, [1 4], W, 4, [2 3] )...
+%                            + R_l_temp_temp;
+%     end
+%     R_l_temp = R_l_temp_temp;
+%     R{l} = contractTensors( R_l_temp, 4, [1 4], conj(B{l+1}), [2 3] ); 
+% end
+
+% MPO表示のHamiltonianだけ扱える。
+R_N_temp = contractTensors( M{N}, 3, 3, HamiltonianMPO{N}, 4, 4 );
+% Rの添え字の定義は下図の通り
+%%
+% <<defOfRIndex.jpg>>
+
+% R{N-1}だけは特別な処理をして、添え字の定義が上図に合致するようにしなくてはいけない。
+% 最後の添え字の次元が１なのでランクが一つ落ちて、rank-6じゃなくてrank-5になる。
+R_N_temp = contractTensors( R_N_temp, 5, 5, conj( M{N} ), 3, 3 );
+% 最後の二つの添え字の次元を1にして、ランクを2つ落とす。これによってR_N_tempはrank-3のテンソルになる。
+R_N_temp = permute( R_N_temp, [1 3 5 2 4] );
+R{N - 1} = R_N_temp; 
+for l = N-2:-1:1
+    R_l_temp = contractTensors( R{l+1}, 3, 1, M{l+1}, 3, 2 );
+    R_l_temp = contractTensors( R_l_temp, 4, [1 4], HamiltonianMPO{l+1}, 4, [2 3] ) ;
+    R_1_temp = contractTensors( R_l_temp, 4, [1 4], conj(M{l+1}), 3, [2 3] ); 
+    R{l} = R_1_temp;
+end
+
+L = cell(1,N -1);
+E_GSs = [];
+for i_sweep = 1:10 % 将来的に収束を判別してループを抜けるようにする。
+
+    % Right sweep
+    for l=1:N-1
+        if l == 1
+            Heff = contractTensors( HamiltonianMPO{1}, 4, 2, R{1}, 3, 2);
+            Heff = reshape(Heff, [1, size(Heff)]);
+        else
+            Heff = contractTensors( L{l-1}, 3,2, HamiltonianMPO{l}, 4, 1);
+            Heff = contractTensors( Heff, 5, 3, R{l}, 3, 2 );
+        end
+        HeffMatrixForm = reshape( permute( Heff, [3 2 6 4 1 5] ), ...
+            [size(HamiltonianMPO{l}, 3) * size(Heff, 2) * size(R{l}, 3), size(HamiltonianMPO{l}, 4) * size(Heff, 1 ) * size(R{l}, 1) ] );
+        MlVectorForm = reshape( permute(M{l}, [3 1 2]), [numel(M{l}), 1] );
+        options.v0 = MlVectorForm ;
+        
+        % 本当はP' * Heff *Pとした方が正確に求まるらしい。
+        if isGS
+            [MlVectorForm, E_GS] = eigs(HeffMatrixForm, 1,  'sr', options ) ;
+        else
+            [MlVectorForm2, E_GS2] = eigs(HeffMatrixForm, 2,  'sr', options ) ;
+            MlVectorForm = MlVectorForm2(:,2);
+            E_GS = E_GS2(2,2);
+        end
+        
+        E_GSs = [E_GSs E_GS];
+        M{l} = permute( reshape( MlVectorForm, [size(M{l},3), size(M{l},1), size(M{l},2)] ), [2 3 1 ] ) ;
+        
+        MlMatrixForm = reshape( permute(M{l}, [3 1 2]), [size(M{l},3) * size(M{l},1), size(M{l},2)] );
+        [AlMatrixForm, S, V] = svd(MlMatrixForm, 'econ') ;
+        dimS = size( S, 1);
+        M{l} = permute( reshape(AlMatrixForm, [size(M{l},3), size(M{l},1),  dimS]), [2 3 1] );
+        VdagM = contractTensors( V', 2, 2, M{l+1}, 3, 1 );
+        %    M{l+1} = [];
+        %     for s = 1:dimS
+        %         M{l+1}(s, :, :) = S(s,s) * VdagM(s, :, :);
+        %     end
+        M{l+1} = contractTensors(S, 2, 2, VdagM, 3, 1 );
+        
+        if l == 1
+            L{1} = contractTensors( M{1}, 3, 3, HamiltonianMPO{1}, 4, 4 );
+            L{1} = contractTensors( L{1}, 5, 5, conj( M{1} ), 3, 3 );
+            L{l} = permute( L{1}, [2 4 6 1 3 5] ); % rank-3のテンソルにする。
+        else
+            L{l} = contractTensors( L{l-1}, 3, 1, M{l}, 3, 1 );
+            L{l} = contractTensors( L{l}, 4, [1 4], HamiltonianMPO{l}, 4, [1 4] );
+            L{l} = contractTensors( L{l}, 4, [1 4], conj( M{l} ), 3, [1 3] );
+        end
+        
+    end
+    
+    
+    % Left sweep
+    for l = N:-1:2
+        if l == N
+            Heff = contractTensors( L{N-1}, 3, 2, HamiltonianMPO{N}, 4, 1 );
+            Heff = permute(Heff, [1 2 4 5 3]) ;
+            HeffMatrixForm = reshape( permute( Heff, [3 2 4 1] ), ...
+                [size(HamiltonianMPO{N}, 3) * size(Heff, 2), size(HamiltonianMPO{l}, 4) * size(Heff, 1)]) ;
+        else
+            Heff = contractTensors( L{l-1}, 3,2, HamiltonianMPO{l}, 4, 1);
+            Heff = contractTensors( Heff, 5, 3, R{l}, 3, 2 );
+            HeffMatrixForm = reshape( permute( Heff, [3 2 6 4 1 5] ), ...
+                [size(HamiltonianMPO{l}, 3) * size(Heff, 2) * size(R{l}, 3), size(HamiltonianMPO{l}, 4) * size(Heff, 1 ) * size(R{l}, 1) ] );
+        end
+        MlVectorForm = reshape( permute(M{l}, [3 1 2]), [numel(M{l}), 1] );
+        options.v0 = MlVectorForm ;
+        
+        if isGS
+            [MlVectorForm, E_GS] = eigs(HeffMatrixForm, 1,  'sr', options ) ;
+        else
+            [MlVectorForm2, E_GS2] = eigs(HeffMatrixForm, 2,  'sr', options ) ;
+            MlVectorForm = MlVectorForm2(:,2);
+            E_GS = E_GS2(2,2);
+        end
+        
+        E_GSs = [E_GSs E_GS];
+        M{l} = permute( reshape( MlVectorForm, [size(M{l},3), size(M{l},1), size(M{l},2)] ), [2 3 1 ] ) ;
+        
+        % ここからrightNormalize()のコピペ
+        Dleft = size( M{l}, 1 );
+        Dright = size( M{l},2);
+        d = size( M{l}, 3 );
+        MlMatrixForm = reshape( permute( M{l}, [1,3,2]), [Dleft, Dright*d] ) ;
+        [U,S,V] = svd(MlMatrixForm, 'econ');
+        BlMatrixForm = V';
+        dimS = size(S, 1); % Sは対角行列
+        M{l} = permute( reshape(BlMatrixForm, [dimS, d, Dright]), [1,3,2]) ;
+        MU = contractTensors(M{l-1}, 3, 2, U, 2, 1) ;
+        MU = permute(MU, [1 3 2]);
+        M{l-1} = zeros(size(MU,1), dimS, size(MU,3));
+        %     for s = 1:dimS
+        %         M{l-1}(:,s,:) = MU(:,s,:) * S(s,s);
+        %     end
+        M{l-1} = permute( contractTensors( MU, 3, 2, S, 2, 1 ), [1 3 2] );
+        
+        
+        % rightNormalize()のコピペ終了
+        
+        if l == N
+            R_N_temp = contractTensors( M{N}, 3, 3, HamiltonianMPO{N}, 4, 4 );
+            R_N_temp = contractTensors( R_N_temp, 5, 5, conj( M{N} ), 3, 3 );
+            % 最後の二つの添え字の次元を1にして、ランクを2つ落とす。これによってR_N_tempはrank-3のテンソルになる。
+            R_N_temp = permute( R_N_temp, [1 3 5 2 4] );
+            R{N - 1} = R_N_temp;
+        else
+            R_lm1_temp = contractTensors( R{l}, 3, 1, M{l}, 3, 2 );
+            R_lm1_temp = contractTensors( R_lm1_temp, 4, [1 4], HamiltonianMPO{l}, 4, [2 3] ) ;
+            R_1m1_temp = contractTensors( R_lm1_temp, 4, [1 4], conj(M{l}), 3, [2 3] );
+            R{l-1} = R_1m1_temp;
+        end     
+    end
+    
+end
+
+% i_sweep = 1:length(E_GSs) ;
+% plot(i_sweep, E_GSs);
+% disp('calculated:');
+% disp(E_GSs(end));
+% disp('Exact:')
+% disp(exactTransverseIsing(J,h,N));
+end
+
+function mps = randomMPS(D, d, N)
+mps = cell(1, N);
+mps{1} = randn( 1, D, d );
+mps{N} = randn( D, 1, d );
+for i = 2:N-1
+    mps{i} = randn(D,D,d);
+end
+end
+
+##### SOURCE END #####
+--></body></html>

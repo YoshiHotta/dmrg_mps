@@ -1,0 +1,176 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      4551,        167]
+NotebookOptionsPosition[      4115,        146]
+NotebookOutlinePosition[      4472,        162]
+CellTagsIndexPosition[      4429,        159]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Transverse Ising model", "Title",
+ CellChangeTimes->{{3.632913496166974*^9, 3.632913500987047*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Matrix Product Operator representation \
+\>", "Section",
+ CellChangeTimes->{{3.632913528345298*^9, 3.6329135477249823`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  SubscriptBox["H", 
+   RowBox[{"transverse", " ", "Ising"}]], " ", "=", " ", 
+  RowBox[{"-", 
+   RowBox[{
+    UnderoverscriptBox["\[Sum]", 
+     RowBox[{"i", "=", "1"}], "N"], 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"J", " ", 
+       SubsuperscriptBox["S", "i", "x"], 
+       SubsuperscriptBox["S", 
+        RowBox[{"i", "+", "1"}], "x"]}], "+", 
+      RowBox[{"h", " ", 
+       SubsuperscriptBox["S", "i", "z"]}]}], 
+     ")"}]}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  SuperscriptBox["W", 
+   RowBox[{"[", "i", "]"}]], " ", "=", " ", 
+  RowBox[{"(", GridBox[{
+     {"1", "0", "0"},
+     {
+      RowBox[{
+       RowBox[{"-", "J"}], " ", "Sx"}], "0", "0"},
+     {
+      RowBox[{
+       RowBox[{"-", "h"}], " ", "Sz"}], "Sx", "1"}
+    }], ")"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  SuperscriptBox["W", 
+   RowBox[{"[", "1", "]"}]], " ", "=", " ", 
+  RowBox[{"(", GridBox[{
+     {
+      RowBox[{
+       RowBox[{"-", "h"}], " ", "Sz"}], "Sx", "1"}
+    }], ")"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  SuperscriptBox["W", 
+   RowBox[{"[", "N", "]"}]], " ", "=", " ", 
+  RowBox[{"(", GridBox[{
+     {"1"},
+     {
+      RowBox[{
+       RowBox[{"-", "J"}], " ", "Sx"}]},
+     {
+      RowBox[{
+       RowBox[{"-", " ", "h"}], " ", "Sz"}]}
+    }], ")"}]}]}], "Input",
+ CellChangeTimes->{
+  3.6329129218217087`*^9, {3.632912969089622*^9, 3.6329131127468863`*^9}, {
+   3.6329131631151743`*^9, 3.632913308592095*^9}, {3.632913474188223*^9, 
+   3.6329135116512203`*^9}}],
+
+Cell[BoxData[{Cell["Example", "Subsection",
+  CellChangeTimes->{{3.6329136349521523`*^9, 
+   3.632913635939274*^9}}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"W1", " ", "=", " ", 
+   RowBox[{"(", GridBox[{
+      {
+       RowBox[{
+        RowBox[{"-", "h"}], " ", "Sz1"}], "Sx1", "1"}
+     }], ")"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"W2", " ", "=", " ", 
+   RowBox[{"(", GridBox[{
+      {"1", "0", "0"},
+      {
+       RowBox[{
+        RowBox[{"-", "J"}], " ", "Sx2"}], "0", "0"},
+      {
+       RowBox[{
+        RowBox[{"-", "h"}], " ", "Sz2"}], "Sx2", "1"}
+     }], ")"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"W3", " ", "=", " ", 
+   RowBox[{"(", GridBox[{
+      {"1", "0", "0"},
+      {
+       RowBox[{
+        RowBox[{"-", "J"}], " ", "Sx3"}], "0", "0"},
+      {
+       RowBox[{
+        RowBox[{"-", "h"}], " ", "Sz3"}], "Sx3", "1"}
+     }], ")"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"WN", " ", "=", " ", 
+   RowBox[{"(", GridBox[{
+      {"1"},
+      {
+       RowBox[{
+        RowBox[{"-", "J"}], " ", "SxN"}]},
+      {
+       RowBox[{
+        RowBox[{"-", " ", "h"}], " ", "SzN"}]}
+     }], ")"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"W1", ".", "W2", ".", "W3", ".", "WN"}], "\n", 
+ RowBox[{"{", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"-", "J"}], " ", "Sx1", " ", "Sx2"}], "-", 
+    RowBox[{"J", " ", "Sx2", " ", "Sx3"}], "-", 
+    RowBox[{"J", " ", "Sx3", " ", "SxN"}], "-", 
+    RowBox[{"h", " ", "Sz1"}], "-", 
+    RowBox[{"h", " ", "Sz2"}], "-", 
+    RowBox[{"h", " ", "Sz3"}], "-", 
+    RowBox[{"h", " ", "SzN"}]}], "}"}], "}"}]}], "Input",
+ CellChangeTimes->{{3.632913560384119*^9, 3.632913562192502*^9}, {
+  3.632913605817335*^9, 3.63291364149857*^9}}]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{740, 652},
+WindowMargins->{{144, Automatic}, {Automatic, 28}},
+FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (January 25, \
+2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 105, 1, 92, "Title"],
+Cell[CellGroupData[{
+Cell[709, 27, 134, 3, 80, "Section"],
+Cell[846, 32, 1493, 52, 192, "Input"],
+Cell[2342, 86, 1745, 56, 266, "Input"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
